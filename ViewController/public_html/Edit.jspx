@@ -5001,7 +5001,7 @@
                         </af:inputText>
                       </af:column>
                       <af:column sortProperty="SoObno" filterable="true"
-                                 sortable="true" headerText="STN" id="c25"
+                                 sortable="true" headerText="BPO" id="c25"
                                  align="center" width="70"
                                  filterFeatures="caseInsensitive">
                         <af:inputText value="#{row.bindings.SoObno.inputValue}"

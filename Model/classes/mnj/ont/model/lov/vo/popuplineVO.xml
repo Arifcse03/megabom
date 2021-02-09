@@ -24,34 +24,35 @@
     </SchemaBasedProperties>
   </Properties>
   <SQLQuery>
-    <![CDATA[select distinct l.inventory_item_id,
-       l.sales_order_id HEADER_ID,
-       l.oc_no ob_ref,
-       mnj_item_code(l.inventory_item_id, msib.organization_id) ORDERED_ITEM,
-       msib.DESCRIPTION,
-       TRIM(BOTH ' ' FROM l.dcpo_no) dcpo_no,
-       l.inseam_qty,
-       l.delivery_date,
-       l.delivery_term,
-       l.ship_mode,
-       l.country,
-       d.inseam_size_concat,
-       d.size_qty,
-       v.DESCRIPTION color,
-       mbbla.bom_id
-
-  from CUST_MNJ_ONT_SO_OBINSLINE    d,
-       CUST_MNJ_ONT_SO_OBIN_SIZLINE l,
-       mtl_system_items_b           msib,
-       fnd_flex_values_vl           v,
-       MNJ_BOM_BPO_LINES_ALL        mbbla
- where l.so_obinsline_id = d.so_obinsline_id
-   and v.FLEX_VALUE_SET_ID = 1014895 --'MJ_Item_Shade/Color
-   and v.flex_value = msib.segment4
-   and v.enabled_flag = 'Y'
-   and msib.ORGANIZATION_ID = 353
-   and MBBLA.SALE_ORDER_ID = L.SALES_ORDER_ID
-   and msib.inventory_item_id = l.inventory_item_id]]>
+    <![CDATA[select distinct pl.item_id inventory_item_id,
+d.bpo_id HEADER_ID,
+d.bpo ob_ref,
+mnj_item_code(pl.item_id, msib.organization_id) ORDERED_ITEM,
+msib.DESCRIPTION,
+d.country dcpo_no,
+d.qty inseam_qty,
+d.SHIPDATE delivery_date,
+d.INCOTERMS delivery_term,
+d.shipmode ship_mode,
+d.country,
+l.SIZE_NAME inseam_size_concat,
+l.qty size_qty,
+pl.color color,
+mbbla.bom_id
+from xx_om_poc_l_t PL,
+xx_om_bpo_info_t d,
+xx_om_sizewise_l_t l,
+mtl_system_items_b msib,
+fnd_flex_values_vl v,
+MNJ_BOM_BPO_LINES_ALL mbbla
+where d.bpo_id=l.bpo_id
+and pl.fob_id=d.fob_id
+and v.FLEX_VALUE_SET_ID = 1014895 --'MJ_Item_Shade/Color
+and v.flex_value = msib.segment4
+and v.enabled_flag = 'Y'
+and msib.ORGANIZATION_ID = 353
+and MBBLA.SALE_ORDER_ID = d.bpo_id
+and msib.inventory_item_id = Pl.item_id]]>
   </SQLQuery>
   <ViewAttribute
     Name="InventoryItemId"
