@@ -2368,7 +2368,7 @@ Integer.parseInt(r.getAttribute("SizeQuantity").toString());
         System.out.println("Enter in insert in mnj_bom_bpo_lines_all....");
         ResultSet rs = null;
         int count = 0;
-        String sqlSatement = "select * from MNJ_ORDER_QTY where POC_ID = ?";
+        String sqlSatement = "select B.BPO_ID,B.BPO, B.QTY from XX_OM_POC_L_T L, XX_OM_BPO_INFO_T B where L.FOB_id=B.FOB_ID and L.POC_ID =?";
         PreparedStatement preparedStatement = am.getDBTransaction().createPreparedStatement(sqlSatement, DBTransaction.DEFAULT);
         
         preparedStatement.setString(1, pocId);
@@ -2376,8 +2376,8 @@ Integer.parseInt(r.getAttribute("SizeQuantity").toString());
         rs = preparedStatement.executeQuery();
         
         while (rs.next()){
-            System.out.println("BPO_ID: " + rs.getString(8) + ", BPO_NUMBER: " +  rs.getString(9) + ", ORDER_QTY: " + rs.getString(13));
-            insertIntoMNJ_BOM_BPO_LINES_ALL(rs.getString(8), rs.getString(9), rs.getString(13), am.getBomBpoLinesAllVO1(), pocId);
+            System.out.println("BPO_ID: " + rs.getString(1) + ", BPO: " +  rs.getString(2) + ", QTY: " + rs.getString(3));
+            insertIntoMNJ_BOM_BPO_LINES_ALL(rs.getString(1), rs.getString(2), rs.getString(3), am.getBomBpoLinesAllVO1(), pocId);
             count++;
         }
         System.out.println("Total added rows in mnj_bom_bpo_lines_all: " + count);        
