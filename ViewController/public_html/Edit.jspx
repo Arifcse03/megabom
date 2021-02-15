@@ -331,7 +331,8 @@
                                       partialSubmit="true"
                                       disabled="#{bindings.PocId.inputValue != null ? 'false' : 'true'}"/>
                     <af:commandButton text="Fill BPO" id="cb29"
-                                      inlineStyle="font-weight:bold;">
+                                      inlineStyle="font-weight:bold;"
+                                      visible="false">
                       <af:showPopupBehavior popupId="::p6"/>
                     </af:commandButton>
                   </af:toolbar>

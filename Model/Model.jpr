@@ -207,6 +207,10 @@
             <value n="id" v="Resource Bundle Variable Resolver"/>
             <value n="isJDK" v="false"/>
          </hash>
+         <hash>
+            <url n="id" protocol="file" path="/D:/AppData/Roaming/JDeveloper/system11.1.1.6.38.62.29/o.jdeveloper/Poi-3.9.jar.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
       <list n="libraryReferences">
          <hash>
@@ -255,6 +259,10 @@
          </hash>
          <hash>
             <value n="id" v="Resource Bundle Variable Resolver"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" protocol="file" path="/D:/AppData/Roaming/JDeveloper/system11.1.1.6.38.62.29/o.jdeveloper/Poi-3.9.jar.library"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
