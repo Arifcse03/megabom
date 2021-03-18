@@ -332,10 +332,6 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v=""/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
             <value n="id" v="Poi-3.9.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
@@ -483,10 +479,6 @@
          </hash>
          <hash>
             <url n="id" path="../../../AppData/Roaming/JDeveloper/system11.1.1.6.38.62.29/o.jdeveloper/Poi-3.9.jar.library"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <value n="id" v=""/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>

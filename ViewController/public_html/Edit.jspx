@@ -4150,7 +4150,8 @@
                   <af:selectBooleanCheckbox value="#{row.bindings.Flag.inputValue}"
                                             label="#{row.bindings.Flag.label}"
                                             shortDesc="#{bindings.CustMnjOntBomRmlineLinesView11.hints.Flag.tooltip}"
-                                            id="sbc4"/>
+                                            id="sbc4" selected="false"
+                                            autoSubmit="true"/>
                 </af:column>
                 <af:column headerText="Item Status"
                            id="c149" align="center" sortable="true"
