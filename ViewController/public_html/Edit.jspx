@@ -1322,6 +1322,12 @@
                 <f:facet name="menus">
                   <af:menu text="File" id="m2">
                     <af:commandMenuItem text="Export to Excel" id="cmi1"/>
+                    <af:commandMenuItem text="Download CSV Format FOr Fill Thread"
+                                        id="cmi3">
+                      <af:fileDownloadActionListener contentType="text/csv"
+                                                     filename="Fill thread format.csv"
+                                                     method="#{backing_bean.Fill_Thread_CSV_upload_format}"/>
+                    </af:commandMenuItem>
                   </af:menu>
                 </f:facet>
                 <f:facet name="toolbar">
@@ -1356,6 +1362,14 @@
                                       icon="/icons/popupicon2.gif">
                       <af:showPopupBehavior popupId="::p7" alignId="::f1"/>
                     </af:commandButton>
+                    <af:inputFile label="Upload Fill Thread" id="if2"
+                                  inlineStyle="color:Background; font-family:Georgia, 'Times New Roman', times, Serif;"
+                                  valueChangeListener="#{backing_bean.Upload_fill_thread}"
+                                  autoSubmit="true"
+                                  binding="#{backing_bean.uploadthreadbutton}"/>
+                    <af:commandButton text="Upload" id="cb40"
+                                      actionListener="#{backing_bean.Update_FIll_thread}"
+                                      partialSubmit="true"/>
                   </af:toolbar>
                 </f:facet>
                 <f:facet name="statusbar"/>

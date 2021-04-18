@@ -2,8 +2,13 @@ package mnj.ont.view.backing;
 
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import java.io.OutputStream;
+
+import java.io.OutputStreamWriter;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -43,6 +48,7 @@ import oracle.adf.view.rich.component.rich.RichPopup;
 import oracle.adf.view.rich.component.rich.data.RichColumn;
 import oracle.adf.view.rich.component.rich.data.RichTable;
 import oracle.adf.view.rich.component.rich.input.RichInputComboboxListOfValues;
+import oracle.adf.view.rich.component.rich.input.RichInputFile;
 import oracle.adf.view.rich.component.rich.input.RichInputListOfValues;
 import oracle.adf.view.rich.component.rich.input.RichInputText;
 import oracle.adf.view.rich.component.rich.input.RichSelectOneChoice;
@@ -130,6 +136,7 @@ public class Main {
     private RichTable otherTable;
     private RichPopup generatePRPopUp;
     private RichOutputText totalOrderQty;
+    private RichInputFile uploadthreadbutton;
 
     public ApplicationModule getAppM(){
         DCBindingContainer bindingContainer =
@@ -2415,6 +2422,180 @@ Integer.parseInt(r.getAttribute("SizeQuantity").toString());
         }
         return null;
     }
-}
+
+    public void Upload_fill_thread(ValueChangeEvent valueChangeEvent) {
+        // Add event code here...
+        UploadedFile file = (UploadedFile)valueChangeEvent.getNewValue();
+        
+               try {
+                   // clearSizeBreakDownTable();
+                   parseFile2(file.getInputStream());
+                   //AdfFacesContext.getCurrentInstance().addPartialTarget(budgetFinalTable);
+               //    uploadthreadbutton.setValue(null);            
+                   // AdfFacesContext.getCurrentInstance().addPartialTarget(bpOHTable);
+                   //ViewObject re=appM.getXxOmBpoInfoTVO1();
+
+                   //  appM.getDBTransaction().commit();
+                   // re.clearCache();
+                   // re.executeQuery();;
+                   uploadthreadbutton.setValue(null);
+               } catch (IOException e) {
+                   // TODO
+               }
+        
+        
+    }
+    
+    public void parseFile2(java.io.InputStream file) {
+           BufferedReader reader =
+               new BufferedReader(new InputStreamReader(file));
+           String strLine = "";
+           StringTokenizer st = null;
+           int lineNumber = 0, tokenNumber = 0;
+           Row rw = null;
+
+           ViewObject vo =am.getCustMnjOntBomRmlineLinesView1();
+
+           //read comma separated file line by line
+           try {
+               while ((strLine = reader.readLine()) != null) {
+                   lineNumber++;
+                   // create a new row skip the header (header has linenumber 1)
+                   if (lineNumber > 1) {
+                       rw = vo.createRow();
+                       rw.setNewRowState(Row.STATUS_INITIALIZED);
+                       vo.insertRow(rw);
+                   }
+
+                   //break comma separated line using ","
+                   st = new StringTokenizer(strLine, ",");
+
+                   double sizeProjQty = 0, sizeActualQty = 0, addDeductQty;
+
+                   while (st.hasMoreTokens()) {
+                       //display csv values
+                       tokenNumber++;
+
+                       String theToken = st.nextToken();
+                       System.out.println("Line # " + lineNumber + ", Token # " +
+                                          tokenNumber + ", Token : " + theToken);
+
+                       if (lineNumber > 1) {
+                           // set Attribute Values
+                           switch (tokenNumber) {
+                           case 1:
+                               rw.setAttribute("Attribute11", theToken);
+                               break;
+                           case 2:
+                               rw.setAttribute("Attribute12", theToken);
+                               break;
+                           case 3:
+                                   rw.setAttribute("Attribute13", theToken);
+                               break;
+                           case 4:
+                                       rw.setAttribute("Attribute14", theToken);
+                               break;
+                           case 5:
+                                           rw.setAttribute("AdditionalQty", theToken);
+                                break;
+                           case 6:
+                                           rw.setAttribute("PricePerUnit", theToken);
+                               break;
+                           case 7:
+                                           rw.setAttribute("VendorId", theToken);
+                               break;
+                           case 8:
+                                           rw.setAttribute("Attribute15", theToken);
+                               break;
+                           
+                               
+                               
+                         
+                           }
+                       }
+                   }
+                   //reset token number
+                   tokenNumber = 0;
+               }
+           } catch (IOException e) {
+               // TODO add more
+               FacesContext fctx = FacesContext.getCurrentInstance();
+               fctx.addMessage(threadTable.getClientId(fctx),
+                               new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                                "Content Error in Uploaded file",
+                                                e.getMessage()));
+           } catch (Exception e) {
+               FacesContext fctx = FacesContext.getCurrentInstance();
+               fctx.addMessage(null,
+                               new FacesMessage(FacesMessage.SEVERITY_ERROR, "Data Error in Uploaded file",
+                                                e.getMessage()));
+           }
+       }
+
+    public void setUploadthreadbutton(RichInputFile uploadthreadbutton) {
+        this.uploadthreadbutton = uploadthreadbutton;
+    }
+
+    public RichInputFile getUploadthreadbutton() {
+        return uploadthreadbutton;
+    }
+
+    public void Update_FIll_thread(ActionEvent actionEvent) {
+        // Add event code here...
+        ViewObject vo = am.getCustMnjOntBomHeaderView1();
+               String bomid=vo.getCurrentRow().getAttribute("BomId").toString();
+               DBTransaction trans =am.getDBTransaction();
+                 CallableStatement stmt = null;
+                 String plsql = "BEGIN XX_ONT_BOMLINE_UPDATE_P(:1); END; ";
+                 stmt = trans.createCallableStatement(plsql, 2);
+                 
+                 try{
+                     stmt.setString(1, bomid);
+                   //  stmt.setString(2, "");
+                     stmt.execute();
+                     System.out.println("DONE");
+                     stmt.close();
+                     vo.executeQuery();
+                     AdfFacesContext.getCurrentInstance().addPartialTarget(threadTable);
+                 }catch(Exception e){
+                     e.printStackTrace();
+                 }
+        
+        
+        
+    }
+
+    public void Fill_Thread_CSV_upload_format(FacesContext facesContext,
+                                              OutputStream outputStream)throws IOException {
+        // Add event code here...
+        // Add event code here...
+                
+
+                BufferedWriter writer =
+                    new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
+                writer.write("*Shade");
+                writer.write(",");
+                writer.write("*Brand");
+                writer.write(",");
+                writer.write("*TEX");
+                writer.write(",");
+                writer.write("*TICKET");
+                writer.write(",");
+                writer.write("*QTY");
+                writer.write(",");
+                writer.write("*Unit Price");
+                writer.write(",");
+                writer.write("Supplir_id");
+                writer.write(",");
+                writer.write("Status");
+                writer.write(",");
+                writer.newLine();
+                writer.flush();
+                writer.close();
+    }
+    
+    
+}///main
 
 
